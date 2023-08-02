@@ -26,11 +26,6 @@ def add_user(user: UserCreate, db: Session = Depends(get_db)):
     return {"access_token": access_token}
 
 
-@router.get('/user', response_model=UserBase)
-def get_user(user: UserBase, db: Session = Depends(get_db)):
-    return db.query(UserBase).filter(UserBase.email == user.email).first()
-    
-
 @router.post('/login', summary="Create access and refresh tokens for user")
 async def login(user: UserCreate, db: Session = Depends(get_db)):
     user_exists = check_user_exists(db, user.email)
