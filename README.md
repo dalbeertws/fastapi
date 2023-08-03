@@ -6,7 +6,7 @@
 2. Activate Virtual env
 
 For linux - `source env/bin/activate`
-For winows - `env\Scripts\activate`
+For windows - `env\Scripts\activate`
 
 3. Install Python packages
 
