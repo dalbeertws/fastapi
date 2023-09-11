@@ -1,5 +1,3 @@
-# Setup
-
 1. Create Virtual env
 `python -m venv env`
 
@@ -12,10 +10,8 @@ For windows - `env\Scripts\activate`
 
 `pip install -r requirements.text`
 
-4. Create Database on your system and replace the creds of database in `sql_app.database.py` file
+4. Create Database on your system and replace the creds of database in `database.database.py` file
 
 5. Run the server
 
 `uvicorn main:app --reload`
-
-Swagger Documentation Link: http://127.0.0.1:8000/docs# fastapi

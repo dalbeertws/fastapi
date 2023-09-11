@@ -3,8 +3,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2Pas
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from typing import Union
-from jose import  jwt
-from sql_app.models import User
+from jose import jwt
+from database.models import User
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -24,7 +24,7 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def create_jwt_token(data: str, expires_delta: Union[timedelta, None] = None):
+def generate_jwt_token(data: str, expires_delta: Union[timedelta, None] = None):
     data = {'sub': data}
     to_encode = data.copy()
     if expires_delta:
@@ -53,5 +53,5 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Security(securi
         if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid credentials")
         return user_id
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=401, detail="Invalid credentials")

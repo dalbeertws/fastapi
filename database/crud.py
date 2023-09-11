@@ -1,12 +1,9 @@
 from sqlalchemy.orm import Session
-from sql_app.models import User, UserToken, Post
+from database.models import User, UserToken, Post
 from fastapi import HTTPException
 
 
-
-# def create_user(email: str, hashed_password: str, db: Session):
-def create_user(email:str,hashed_password: str, db: Session):
-    print('$$$$$'*50)
+def create_new_user(email: str, hashed_password: str, db: Session):
     user = User(email=email, hashed_password=hashed_password)
     db.add(user)
     db.commit()
@@ -21,6 +18,7 @@ def get_user_by_email(email: str, db: Session):
 def get_user(token: str, db: Session):
     return db.query(UserToken).filter(UserToken.token == token).first().user
 
+
 def save_user_token(user: User, access_token: str, db: Session):
     user_token = UserToken(
         access_token=access_token, 
@@ -29,6 +27,7 @@ def save_user_token(user: User, access_token: str, db: Session):
     db.commit()
     db.refresh(user_token)
     return user_token
+
 
 def create_post(post: Post, user_id: int, db: Session):
     created_post = Post(
@@ -41,3 +40,12 @@ def create_post(post: Post, user_id: int, db: Session):
     db.refresh(created_post)
     return created_post
 
+
+def delete_post(post_id: Post, user: User, db: Session):
+    post = db.query(Post).filter(Post.id == post_id).first()
+    # Check if the post belongs to the user
+    if not post or post.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Post not found or does not belong to the user")
+    db.delete(post)
+    db.commit()
+    db.close()
