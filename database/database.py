@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 # replace the user, password, hostname and database according to your configuration according to your information
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/fast"
+SQLALCHEMY_DATABASE_URL = "mysql+mysqldb://root:password@localhost/fast"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

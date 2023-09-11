@@ -18,9 +18,10 @@ def add_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="User with the email already exists")
     hashed_password = get_password_hash(user.password)
     new_user = create_new_user(user.email, hashed_password, db)
-    access_token = generate_jwt_token(user.email, timedelta(minutes=15))
+    access_token = generate_jwt_token(new_user.id, timedelta(minutes=15))
     save_user_token(new_user, access_token, db)
     return {"access_token": access_token}
+
 
 @router.post('/login', summary="Create access and refresh tokens for user")
 async def login(user: UserCreate, db: Session = Depends(get_db)):
@@ -34,6 +35,6 @@ async def login(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password")
-    token = generate_jwt_token(user.email)
+    token = generate_jwt_token(user_obj.id)
     save_user_token(user_obj, token, db)
     return {"access_token": token}
