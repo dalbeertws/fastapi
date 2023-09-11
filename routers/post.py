@@ -27,9 +27,7 @@ def getPosts(user=Depends(get_current_user), db: Session = Depends(get_db)):
     # Check if the response is already cached
     cached_response = cache.get(cache_key)
     if cached_response:
-        print('CACHEEEEEEEEEEEEEE')
         return cached_response
-    print('NOTTTTTTTTTTTTTTTT')
     # If not cached, retrieve the data and cache it
     posts = db.query(User).filter(User.id == user.id).first().posts
     response = {"posts": posts}
