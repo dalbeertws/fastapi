@@ -1,9 +1,9 @@
 from typing import List
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UserBase(BaseModel):
-    email: str
+    email: EmailStr
 
 
 class UserCreate(UserBase):
@@ -35,4 +35,4 @@ class UserPostsRes(BaseModel):
 
 class UserSignupRes(BaseModel):
     id: int
-    email: str
+    email: EmailStr

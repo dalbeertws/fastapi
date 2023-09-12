@@ -37,4 +37,7 @@ def getPosts(user=Depends(get_current_user), db: Session = Depends(get_db)):
 
 @router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
 def deletePost(post_id: int, user=Depends(get_current_user),  db: Session=Depends(get_db)):
+    cache_key = f"getPosts_{user.id}"
     delete_post(post_id, user, db)
+    if cache_key in cache:
+        del cache[cache_key]
