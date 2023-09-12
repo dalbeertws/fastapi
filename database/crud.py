@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from database.models import User, UserToken, Post
+from database.models import User, Post
 from fastapi import HTTPException
 
 
@@ -13,20 +13,6 @@ def create_new_user(email: str, hashed_password: str, db: Session):
 
 def get_user_by_email(email: str, db: Session):
     return db.query(User).filter(User.email == email).first()
-
-
-def get_user(token: str, db: Session):
-    return db.query(UserToken).filter(UserToken.token == token).first().user
-
-
-def save_user_token(user: User, access_token: str, db: Session):
-    user_token = UserToken(
-        access_token=access_token, 
-        user=user)
-    db.add(user_token)
-    db.commit()
-    db.refresh(user_token)
-    return user_token
 
 
 def create_post(post: Post, user_id: int, db: Session):

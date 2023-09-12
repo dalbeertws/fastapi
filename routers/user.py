@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from database.database import get_db
 from database.models import User
 from database.schemas import UserCreate, UserToken
-from database.crud import create_new_user, save_user_token
+from database.crud import create_new_user
 from utils import get_password_hash, check_user_exists, generate_jwt_token, verify_password
 
 
@@ -19,7 +19,6 @@ def add_user(user: UserCreate, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user.password)
     new_user = create_new_user(user.email, hashed_password, db)
     access_token = generate_jwt_token(new_user.id, timedelta(minutes=15))
-    save_user_token(new_user, access_token, db)
     return {"access_token": access_token}
 
 
@@ -36,5 +35,4 @@ async def login(user: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password")
     token = generate_jwt_token(user_obj.id)
-    save_user_token(user_obj, token, db)
     return {"access_token": token}
