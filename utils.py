@@ -1,4 +1,3 @@
-import os
 from fastapi import HTTPException, Security, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -6,11 +5,9 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from typing import Union
 from jose import jwt
-from dotenv import load_dotenv
 from database.models import User
 from database.database import get_db
-
-load_dotenv()
+from settings import SECRET_KEY
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -18,12 +15,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
 ALGORITHM = "HS256"
-
-
-if SECRET_KEY is None:
-    raise EnvironmentError("SECRET_KEY environment variable is missing")
 
 
 def verify_password(plain_password, hashed_password):

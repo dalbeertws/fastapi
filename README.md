@@ -10,7 +10,7 @@ For windows - `env\Scripts\activate`
 
 `pip install -r requirements.text`
 
-4. Create Database on your system and replace the creds of database in `database.database.py` file
+4. Create Database on your system and add the creds of database and secret key in a `.env` file. Took reference from `env.example` file.
 
 5. Run the server
 
