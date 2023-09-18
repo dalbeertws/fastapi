@@ -8,7 +8,7 @@ For windows - `env\Scripts\activate`
 
 3. Install Python packages
 
-`pip install -r requirements.text`
+`pip install -r requirements.txt`
 
 4. Create Database on your system and add the creds of database and secret key in a `.env` file. Took reference from `env.example` file.
 
